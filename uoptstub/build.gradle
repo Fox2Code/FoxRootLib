@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.fox2code'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {}
+
+jar {
+    exclude("com/fox2code/frl/compat")
+    archiveBaseName.set("UnsafeOptimizations-stub")
+    archiveVersion.set("")
+}
+
+test {
+    useJUnitPlatform()
+}

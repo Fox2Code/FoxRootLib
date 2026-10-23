@@ -1,0 +1,14 @@
+classTweaker  v1  official
+
+transitive-inject-interface net/minecraft/core/block/Block com/fox2code/frl/ext/block/ḞRLBlock
+transitive-inject-interface net/minecraft/core/entity/MobPathfinder com/fox2code/frl/entity/FRLPathingEntity
+transitive-inject-interface net/minecraft/core/entity/EntityFallingBlock com/fox2code/frl/entity/FRLEntityBlockCarrier
+transitive-inject-interface net/minecraft/core/entity/player/Player com/fox2code/frl/ext/entity/ḞRLPlayer
+transitive-inject-interface net/minecraft/core/net/NetworkManager com/fox2code/frl/ext/net/ḞRLNetworkManager
+transitive-inject-interface net/minecraft/core/net/handler/PacketHandler com/fox2code/frl/ext/net/ḞRLPacketHandler
+transitive-inject-interface net/minecraft/core/world/World com/fox2code/frl/ext/world/ḞRLWorld
+
+transitive-inject-interface org/useless/dragonfly/data/block/mojang/BlockModelMojangData$Builder com/fox2code/frl/ext/render/dragonfly/ḞRLBlockModelMojangDataBuilder
+
+accessible method org/useless/dragonfly/data/block/mojang/Element$Builder build ()Lorg/useless/dragonfly/data/block/mojang/Element;
+accessible method org/useless/dragonfly/data/block/mojang/BlockModelMojangData <init> (Lnet/minecraft/client/render/texturepack/TexturePackList;Lnet/minecraft/core/util/collection/NamespaceID;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/util/Map;Ljava/util/Map;Lit/unimi/dsi/fastutil/objects/Object2IntMap;Ljava/util/List;)V

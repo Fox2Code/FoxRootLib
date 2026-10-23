@@ -1,0 +1,7 @@
+gui.options.page.frl.title=FoxRootLib
+tile.frl.missing_block.name=Missing Block
+tile.frl.missing_block.desc=This may appear when you have blocks that are missing on your client.
+tile.frl.missing_block_adv.desc=Missing block on client: %s
+item.frl.missing_item.name=Missing Item
+item.frl.missing_item.desc=This may appear when you have items that are missing on your client.
+item.frl.missing_item_adv.desc=Missing item on client: %s

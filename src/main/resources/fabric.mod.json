@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "frl",
+	"version": "${version}",
+	"name": "Fox Root Lib",
+	"description": "Modding utility helper for adding content without causing incompatibility!",
+	"authors": [
+		"Fox2Code"
+	],
+	"contributors": [],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"icon": "assets/frl/icon.png",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.fox2code.frl.FRLInitializer"
+		],
+		"client": [
+			"com.fox2code.frl.client.FRLClientInitializer"
+		],
+		"modmenu": [
+			"com.fox2code.frl.compat.modmenu.FRLModMenu"
+		]
+	},
+	"mixins": [
+		"frl.mixins.json"
+	],
+	"accessWidener": "frl.classtweaker",
+	"depends": {
+		"fabricloader": ">=0.18.0",
+		"minecraft": "*",
+		"java": ">=17"
+	},
+	"custom": {}
+}

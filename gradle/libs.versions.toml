@@ -1,0 +1,82 @@
+[versions]
+##########################################################################
+# Plugins
+# Check this on https://github.com/FabricMC/fabric-loom/releases/latest/
+loom = "1.15-SNAPSHOT"
+# Check this on https://plugins.gradle.org/plugin/com.diffplug.spotless
+spotless = "8.10.4"
+##########################################################################
+# Java Configuration
+# The Java version the JDK will be for compiling and running code.
+java = "17"
+# The Java version the JDK will be for running Gradle.
+gradleJava = "21"
+##########################################################################EEE
+# Mod Dependencies
+# Check this on https://downloads.betterthanadventure.net/bta-client/
+bta = "8.0.1"
+# Options are release, prerelease, nightly, and misc.
+btaChannel = "release"
+# Check this on https://maven.thesignalumproject.net/#/infrastructure/net/fabricmc/fabric-loader/
+loader = "0.18.4-bta.11"
+# Check this on https://github.com/Turnip-Labs/ModMenu/releases/latest/
+modMenu = "5.0.2"
+# Check this on https://github.com/Turnip-Labs/bta-halplibe/releases/latest/
+halplibe = "6.2.0+8.0.1"
+# Check this on https://github.com/Better-than-Adventure/legacy-lwjgl3/releases/latest/
+legacyLwjgl = "1.0.6"
+# Check this on https://github.com/ToufouMaster/BTWaila/releases/latest/
+btwaila = '1.3.1'
+# Check this on https://github.com/MartinSVK12/catalyst/releases/latest/
+catalyst = '3.1.6'
+catalystCore = '3.0.5'
+catalystEnergy = '3.0.1'
+# Check this on https://github.com/MartinSVK12/signalindustries/releases/latest/
+signalindustries = '0.30.0'
+# Check this on https://github.com/IlluminaTorio/Better-With-Industrial-Craft/releases/latest/
+bwic = '1.3'
+# Check this on https://github.com/RoughCipher/Spike/releases/latest/
+spike = '26.10.0+8.0.1'
+# Check this on https://github.com/Fox2Code/FoxEvents/releases/latest/
+foxEvents = '1.3.1'
+##########################################################################
+# Dependencies
+# Check this on https://central.sonatype.com/artifact/org.slf4j/slf4j-api/
+slf4jApi = "2.0.17"
+# This should match the version used by the current BTA release.
+lwjgl = "3.3.3"
+
+joml = "1.10.8" # Note: BTA uses 1.10.7, patch 8 removes the kotlin stdlib dependency
+jomlPrimitivess = "1.10.0"
+##########################################################################
+
+[libraries]
+loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "loader" }
+halplibe = { group = "turniplabs", name = "halplibe", version.ref = "halplibe" }
+modMenu = { group = "turniplabs", name = "modmenu-bta", version.ref = "modMenu" }
+btwaila = { group = "useless", name = "btwaila", version.ref = "btwaila" }
+catalyst = { group = "sunsetsatellite", name = "catalyst-all", version.ref = "catalyst" }
+catalyst-core = { group = "sunsetsatellite", name = "catalyst-core", version.ref = "catalystCore" }
+catalyst-energy = { group = "sunsetsatellite", name = "catalyst-energy", version.ref = "catalystEnergy" }
+signalindustries = { group = "sunsetsatellite", name = "signalindustries", version.ref = "signalindustries" }
+bwic = { group = "com.github.IlluminaTorio", name = "Better-With-Industrial-Craft", version.ref = "bwic" }
+spike = { group = "com.github.RoughCipher", name = "Spike", version.ref = "spike" }
+foxEvents = { group = "com.fox2code.FoxEvents", name = "core", version.ref = "foxEvents" }
+legacyLwjgl = { group = "com.github.Better-than-Adventure", name = "legacy-lwjgl3", version.ref = "legacyLwjgl" }
+slf4jApi = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4jApi" }
+# https://piston-data.mojang.com/v1/objects/43db9b498cb67058d2e12d394e6507722e71bb45/client.jar
+clientJar = { group = "objects", name = "client", version = "43db9b498cb67058d2e12d394e6507722e71bb45" }
+joml = { group = "org.joml", name = "joml", version.ref = "joml" }
+joml-primitives = { group = "org.joml", name = "joml-primitives", version.ref = "jomlPrimitivess" }
+lwjgl = { group = "org.lwjgl", name = "lwjgl", version.ref = "lwjgl"}
+lwjgl-glfw = { group = "org.lwjgl", name = "lwjgl-glfw", version.ref = "lwjgl"}
+lwjgl-openal = { group = "org.lwjgl", name = "lwjgl-openal", version.ref = "lwjgl"}
+lwjgl-opengl = { group = "org.lwjgl", name = "lwjgl-opengl", version.ref = "lwjgl"}
+lwjgl-stb = { group = "org.lwjgl", name = "lwjgl-stb", version.ref = "lwjgl"}
+
+[bundles]
+btaLwjgl = [ "lwjgl", "lwjgl-glfw", "lwjgl-openal", "lwjgl-opengl", "lwjgl-stb", "legacyLwjgl" ]
+
+[plugins]
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

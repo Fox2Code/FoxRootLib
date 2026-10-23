@@ -1,0 +1,62 @@
+{
+  "required": true,
+  "package": "com.fox2code.frl.mixin",
+  "plugin": "com.fox2code.frl.transform.FRLMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "MixinRegistries",
+    "block.MixinBlock",
+    "compat.catalyst.core.MixinFRLFakePlayerBase",
+    "compat.catalyst.energy.MixinFRLTileEntityEnergyReceiver",
+    "compat.catalyst.energy.MixinFRLTileEntityEnergyStorage",
+    "compat.halplibe.MixinEventUtils",
+    "compat.halplibe.MixinNetworkHandler",
+    "compat.ic2.MixinFRLTileEntityEnergyReceiver",
+    "compat.ic2.MixinFRLTileEntityEnergyStorage",
+    "compat.ic2.MixinTileEntityElecMachine",
+    "compat.ic2.MixinTileEntityElectricBlock",
+    "compat.uselessnumerical.MixinMinecraftIdsConfiguration",
+    "dev.compat.halplibe.MixinKey",
+    "dev.compat.halplibe.MixinModListeners",
+    "entity.MixinEntity",
+    "entity.MixinEntityDispatcher",
+    "entity.MixinEntityFallingBlock",
+    "entity.MixinMobPathfinder",
+    "entity.MixinNetEntryPlayerServer",
+    "item.MixinItemStack",
+    "net.MixinNetworkManager",
+    "net.MixinPacket",
+    "net.MixinPacketHandler",
+    "nuopt.compat.catalyst.energy.MixinFRLTileEntityEnergyReceiver",
+    "nuopt.world.MixinWorld",
+    "player.MixinPlayer",
+    "uopt.compat.catalyst.energy.MixinFRLTileEntityEnergyReceiver",
+    "uopt.world.MixinWorld",
+    "world.MixinWorld",
+    "world.chunk.MixinChunkProviderThreaded",
+    "world.chunk.MixinMissingBlockFixer"
+  ],
+  "client": [
+    "net.MixinPacketHandlerClient",
+    "net.MixinPingPacketHandler",
+    "nohalplibe.MixinBlockModelDispatcher",
+    "nohalplibe.MixinItemModelDispatcher",
+    "nohalplibe.MixinMinecraft",
+    "player.MixinPlayerLocal",
+    "player.MixinPlayerLocalMultiplayer",
+    "render.MixinItemModelDispatcher",
+    "render.dragonfly.MixinBlockModelMojangDataBuilder",
+    "world.chunk.MixinChunkProviderDynamic"
+  ],
+  "server": [
+    "net.MixinPacketHandlerLogin",
+    "net.MixinPacketHandlerServer",
+    "nohalplibe.MixinMinecraftServer",
+    "player.MixinPlayerServer",
+    "world.MixinWorldServer",
+    "world.chunk.MixinChunkProviderServer"
+  ]
+}

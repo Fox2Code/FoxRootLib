@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "frl-uopt",
+	"version": "1.0",
+	"name": "FoxRootLib: Unsafe Optimizations",
+	"description": "Enable Unsafe Optimizations in FoxRootLib!\nMake the game run very fast!\nBut also make the game more prone to crashes!",
+	"authors": [
+		"Fox2Code"
+	],
+	"contributors": [],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"icon": "assets/frl-uopt/icon.png",
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"modmenu": [
+			"com.fox2code.frl.stub.uopt.UOptModMenuProxy"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"frl": "*"
+	},
+	"custom": {}
+}
