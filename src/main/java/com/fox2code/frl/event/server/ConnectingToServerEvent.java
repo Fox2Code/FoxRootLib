@@ -42,9 +42,10 @@ public final class ConnectingToServerEvent extends Event implements Event.Cancel
 	private final UUID uuid;
 	private final NetworkManager networkManager;
 	private final String hostname;
+	private final boolean withAuth2;
 	private String kickMessage;
 
-	public ConnectingToServerEvent(String username, UUID uuid, NetworkManager networkManager, String hostname) {
+	public ConnectingToServerEvent(String username, UUID uuid, NetworkManager networkManager, String hostname, boolean withAuth2) {
 		Objects.requireNonNull(username);
 		Objects.requireNonNull(uuid);
 		Objects.requireNonNull(networkManager);
@@ -52,6 +53,7 @@ public final class ConnectingToServerEvent extends Event implements Event.Cancel
 		this.uuid = uuid;
 		this.networkManager = networkManager;
 		this.hostname = hostname;
+		this.withAuth2 = withAuth2;
 	}
 
 	/**
@@ -94,6 +96,13 @@ public final class ConnectingToServerEvent extends Event implements Event.Cancel
 	 */
 	public @NotNull NetworkManager getNetworkManager() {
 		return this.networkManager;
+	}
+
+	/**
+	 * @return if the player connecting is connecting with Auth2
+	 */
+	public boolean isWithAuth2() {
+		return this.withAuth2;
 	}
 
 	/**

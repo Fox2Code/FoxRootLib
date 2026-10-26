@@ -23,9 +23,11 @@
  */
 package com.fox2code.frl.network;
 
+import com.fox2code.frl.network.ext.PacketCustomPayloadKey;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.net.NetworkManager;
 import net.minecraft.core.net.packet.Packet;
+import net.minecraft.core.net.packet.PacketCustomPayload;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -53,6 +55,21 @@ public final class FRLHardenedPacketReader {
 					packet.read(dis);
 					return packet;
 				}
+			} else if (isServer && id == 250 && networkManager.frl$getPacketHandler().frl$a2bh()) {
+				// Allow PacketCustomPayload Auth2 packets
+				String channelName = Packet.readStringUTF8(dis, 128);
+				int length = dis.readInt();
+				if (length == 0 && FRLNetConstants.FRL_AUTH2_KEY.equals(channelName)) {
+					return PacketCustomPayloadKey.INSTANCE;
+				}
+				if (length < 1 || length > 16384 ||
+						!FRLNetConstants.FRL_AUTH2.equals(channelName)) {
+					throw new IOException("Bad packet id " + id);
+				}
+				byte[] data = new byte[length];
+				dis.readFully(data, 0, length);
+				// Force skip FRL's custom handling.
+				return new PacketCustomPayload(FRLNetConstants.FRL_AUTH2, data);
 			} else {
 				throw new IOException("Bad packet id " + id);
 			}
@@ -62,6 +79,7 @@ public final class FRLHardenedPacketReader {
 	}
 
 	static {
+		loginPacketIds.add(0); // PacketKeepAlive
 		loginPacketIds.add(1); // PacketLogin
 		loginPacketIds.add(2); // PacketHandshake
 		loginPacketIds.add(254); // PacketPingHandshake

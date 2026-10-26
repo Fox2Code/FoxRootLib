@@ -58,4 +58,9 @@ public interface ḞRLPacketHandler {
 	@Nullable default Player frl$getPlayer() {
 		throw new AssertionError("Implemented in Mixin");
 	}
+
+	// Auth2 related methods.
+	default boolean frl$a2bh() {
+		throw new AssertionError("Implemented in Mixin");
+	}
 }

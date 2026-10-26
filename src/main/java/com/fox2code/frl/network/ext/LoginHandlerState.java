@@ -24,5 +24,5 @@
 package com.fox2code.frl.network.ext;
 
 public enum LoginHandlerState {
-	PRE_HANDSHAKE, REPEAT_HANDSHAKE, HANDSHAKE, LOGIN, PING, KICK
+	PRE_HANDSHAKE, REPEAT_HANDSHAKE, AUTH2, HANDSHAKE, LOGIN, PING, KICK
 }

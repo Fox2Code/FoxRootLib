@@ -23,16 +23,19 @@
  */
 package com.fox2code.frl.mixin.net;
 
+import com.fox2code.frl.FRLConfig;
+import com.fox2code.frl.FRLCore;
 import com.fox2code.frl.FRLRegistry;
 import com.fox2code.frl.ext.net.ḞRLPacketHandler;
 import com.fox2code.frl.network.FRLNetConstants;
+import com.fox2code.frl.network.auth2.FRLAuth2;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.net.handler.PacketHandlerClient;
-import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.NetworkManager;
+import net.minecraft.core.net.handler.PacketHandler;
 import net.minecraft.core.net.packet.PacketCustomPayload;
 import net.minecraft.core.net.packet.PacketDisconnect;
 import net.minecraft.core.net.packet.PacketHandshake;
@@ -53,18 +56,16 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Mixin(value = PacketHandlerClient.class,remap = false)
-public abstract class MixinPacketHandlerClient implements ḞRLPacketHandler {
-	@Shadow
-	@Final
-	private NetworkManager netManager;
+public abstract class MixinPacketHandlerClient extends PacketHandler implements ḞRLPacketHandler {
+	@Shadow @Final private NetworkManager netManager;
 
-	@Unique private boolean hasReceivedHandshake;
+	@Shadow private boolean disconnected;
 
-	@Shadow
-	public abstract void handleDisconnect(@NotNull PacketDisconnect packetDisconnect);
+	@Shadow @Final private Minecraft mc;
 
-	@Shadow
-	protected abstract Entity getEntityByID(int i);
+	@Unique private boolean frl$hasReceivedHandshake;
+
+	@Unique private FRLAuth2 frl$Auth2;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	public void onInitialized(Minecraft minecraft, String host, int port, CallbackInfo ci) {
@@ -76,20 +77,31 @@ public abstract class MixinPacketHandlerClient implements ḞRLPacketHandler {
 			this.netManager.frl$notifyPresence();
 			this.netManager.addToSendQueue(new PacketPingHandshake(0, 0,
 				"FRL", 0, this.netManager.frl$getConnectionHostname(), 0));
+		} else if (this.frl$Auth2 != null) {
+			this.frl$Auth2.notifyReply();
 		}
 	}
 
 	@Inject(method = "handleHandshake", at = @At(value = "HEAD"), cancellable = true)
 	public void onHandleHandshake(PacketHandshake packetHandshake, CallbackInfo ci) {
-		if (this.hasReceivedHandshake) {
+		if (this.frl$hasReceivedHandshake) {
 			this.handleDisconnect(new PacketDisconnect("PacketHandshake received twice."));
 			ci.cancel();
+		} else if (this.frl$Auth2 != null && packetHandshake.username == null) {
+			packetHandshake.username = this.frl$Auth2.getFinalServerId();
+		} else if (FRLConfig.forceAuth2 && !"-".equals(packetHandshake.username)) {
+			this.handleDisconnect(new PacketDisconnect(
+					FRLConfig.modpackForceAuth2 ?
+							"The server does not use your current modpack!" :
+							"Server does not support Auth2"));
+			ci.cancel();
 		}
-		this.hasReceivedHandshake = true;
+		this.frl$hasReceivedHandshake = true;
 	}
 
 	@Inject(method = "handleCustomPayload", at = @At(value = "HEAD"), cancellable = true)
 	public void onHandleCustomPayload(PacketCustomPayload packetCustomPayload, CallbackInfo ci) {
+		if (this.disconnected) return;
 		if (FRLNetConstants.REGISTRY.equals(packetCustomPayload.channel)) {
 			try {
 				FRLRegistry.Client.initializeFromServerRegistryPacket(packetCustomPayload);
@@ -114,8 +126,28 @@ public abstract class MixinPacketHandlerClient implements ḞRLPacketHandler {
 			}
 			this.frl$ReplyPayload();
 			ci.cancel();
-		} else if (FRLNetConstants.REPEAT_HANDSHAKE.equals(packetCustomPayload.channel) && !this.hasReceivedHandshake) {
+		} else if (FRLNetConstants.REPEAT_HANDSHAKE.equals(packetCustomPayload.channel) &&
+				!this.frl$hasReceivedHandshake && this.frl$Auth2 == null) {
 			this.netManager.addToSendQueue(new PacketHandshake(Minecraft.getMinecraft().session.username));
+		} else if (FRLNetConstants.FRL_AUTH2.equals(packetCustomPayload.channel) && !this.frl$hasReceivedHandshake) {
+			if (this.frl$Auth2 == null) {
+				this.frl$ReplyPayload();
+				this.frl$Auth2 = new FRLAuth2(this.netManager, this.mc.session);
+			}
+			if (this.frl$Auth2.onReceivePacket(packetCustomPayload)) {
+				if (this.frl$Auth2.getKickMessage() != null) {
+					this.handleDisconnect(new PacketDisconnect(this.frl$Auth2.getKickMessage()));
+					this.frl$hasReceivedHandshake = true;
+					this.frl$Auth2 = null;
+				} else {
+					// Trigger Auth2 fake handshake.
+					FRLCore.LOGGER.info("Auth2 initialization completed, finalizing authentification.");
+					this.handleHandshake(new PacketHandshake());
+				}
+			}
+			ci.cancel();
+		} else if (this.frl$Auth2 != null && this.frl$Auth2.isAuth2KeyPacket(packetCustomPayload)) {
+			ci.cancel();
 		}
 	}
 

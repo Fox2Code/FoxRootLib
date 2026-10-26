@@ -26,6 +26,8 @@ package com.fox2code.frl.ext.net;
 import net.minecraft.core.net.handler.PacketHandler;
 import org.jetbrains.annotations.ApiStatus;
 
+import javax.crypto.SecretKey;
+
 @ApiStatus.NonExtendable
 public interface ḞRLNetworkManager {
 	default boolean frl$hasFoxRootLib() {
@@ -35,6 +37,10 @@ public interface ḞRLNetworkManager {
 	default void frl$notifyPresence() {
 		throw new AssertionError("Implemented in Mixin");
 	}
+
+	default boolean frl$useFullCrypto() { throw new AssertionError("Implemented in Mixin"); }
+
+	default void frl$setSharedKey(SecretKey sharedKey) { throw new AssertionError("Implemented in Mixin"); }
 
 	default PacketHandler frl$getPacketHandler() {
 		throw new AssertionError("Implemented in Mixin");

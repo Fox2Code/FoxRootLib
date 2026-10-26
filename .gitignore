@@ -1,4 +1,6 @@
+/.junie
 /local.properties
+/logs
 .gradle/
 .idea/
 .vscode/

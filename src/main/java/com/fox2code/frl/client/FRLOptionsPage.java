@@ -23,20 +23,49 @@
  */
 package com.fox2code.frl.client;
 
+import com.fox2code.frl.FRLConfig;
+import com.fox2code.frl.FRLCore;
+import com.fox2code.frl.client.gui.FRLOptionsComponentSpacer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.options.components.BooleanToggleComponent;
+import net.minecraft.client.gui.options.components.OptionsCategory;
 import net.minecraft.client.gui.options.data.OptionsPage;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.DyeColor;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 final class FRLOptionsPage extends OptionsPage {
 	FRLOptionsPage() {
-		super("gui.options.page.frl.title", new ItemStack(Blocks.GLASS_TINTED, DyeColor.MAGENTA.itemMeta));
+		super("gui.options.page.frl.title", new ItemStack(
+				Blocks.LAMP_ACTIVE, 1, DyeColor.MAGENTA.blockMeta));
+		if (!FRLConfig.modpackForceAuth2) {
+			withComponent(new OptionsCategory(
+					"gui.options.page.frl.category.security.title"
+			).withComponent(new BooleanToggleComponent(
+					"gui.options.page.frl.force_auth2.title",
+					false, () -> FRLConfig.forceAuth2,
+					v -> FRLConfig.forceAuth2 = v,
+					"gui.options.page.frl.force_auth2.desc"
+			)));
+			withComponent(new FRLOptionsComponentSpacer(30) {
+				@Override
+				public void onClose() {
+					try {
+						FRLConfig.save();
+					} catch (IOException e) {
+						FRLCore.LOGGER.atWarn().setCause(e)
+								.log("Failed to save FoxRootLib config!");
+					}
+				}
+			});
+		}
 	}
 
 	@Override
 	public boolean isVisible(@NotNull Minecraft mc) {
-		return false;
+		return !this.getComponents().isEmpty();
 	}
 }

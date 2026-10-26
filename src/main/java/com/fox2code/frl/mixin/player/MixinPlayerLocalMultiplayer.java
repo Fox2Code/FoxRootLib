@@ -26,6 +26,8 @@ package com.fox2code.frl.mixin.player;
 import com.fox2code.frl.ext.entity.ḞRLPlayer;
 import net.minecraft.client.entity.player.PlayerLocalMultiplayer;
 import net.minecraft.client.net.handler.PacketHandlerClient;
+import net.minecraft.core.net.handler.PacketHandler;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -33,6 +35,11 @@ import org.spongepowered.asm.mixin.Shadow;
 public class MixinPlayerLocalMultiplayer implements ḞRLPlayer {
 	@Shadow
 	public PacketHandlerClient sendQueue;
+
+	@Override
+	public @Nullable PacketHandler frl$getPacketHandler() {
+		return this.sendQueue;
+	}
 
 	@Override
 	public boolean frl$hasFoxRootLib() {

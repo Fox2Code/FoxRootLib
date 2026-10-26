@@ -28,6 +28,8 @@ public final class FRLNetConstants {
 	public static final String REGISTRY_SLIM = "FRL:REGISTRY_SLIM";
 	public static final String REGISTRY_NULL = "FRL:REGISTRY_NULL";
 	public static final String REPEAT_HANDSHAKE = "FRL:REPEAT_HANDSHAKE";
+	public static final String FRL_AUTH2 = "FRL:AUTH2";
+	public static final String FRL_AUTH2_KEY = "FRL:AUTH2_KEY";
 
 	private FRLNetConstants() {}
 }

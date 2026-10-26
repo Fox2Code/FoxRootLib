@@ -45,4 +45,9 @@ public abstract class MixinPacketHandler implements ḞRLPacketHandler {
 	public @Nullable Player frl$getPlayer() {
 		return null;
 	}
+
+	@Override
+	public boolean frl$a2bh() {
+		return false;
+	}
 }

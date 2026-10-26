@@ -24,6 +24,7 @@
 package com.fox2code.frl.mixin.net;
 
 import com.fox2code.frl.network.ext.PacketCustomPayloadInbound;
+import com.fox2code.frl.network.ext.PacketCustomPayloadKey;
 import com.fox2code.frl.network.ext.PacketCustomPayloadOutbound;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -52,5 +53,6 @@ public class MixinPacket {
 		packetIdToClassMap.put(250, PacketCustomPayloadInbound.class);
 		packetClassToIdMap.put(PacketCustomPayloadInbound.class, 250);
 		packetClassToIdMap.put(PacketCustomPayloadOutbound.class, 250);
+		packetClassToIdMap.put(PacketCustomPayloadKey.class, 250);
 	}
 }

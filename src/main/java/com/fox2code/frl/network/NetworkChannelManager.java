@@ -38,7 +38,7 @@ public final class NetworkChannelManager {
 		PacketCustomPayload.CHANNEL_FLAG, PacketCustomPayload.CHANNEL_RAINBOW_START,
 		PacketCustomPayload.CHANNEL_ROTATION_LOCK, PacketCustomPayload.CHANNEL_WAND_MONSTER,
 		FRLNetConstants.REGISTRY, FRLNetConstants.REGISTRY_SLIM, FRLNetConstants.REGISTRY_NULL,
-		FRLNetConstants.REPEAT_HANDSHAKE
+		FRLNetConstants.REPEAT_HANDSHAKE, FRLNetConstants.FRL_AUTH2, FRLNetConstants.FRL_AUTH2_KEY
 	));
 	private static final HashMap<String, NetworkChannel<?>> registeredChannels = new HashMap<>();
 
@@ -47,6 +47,9 @@ public final class NetworkChannelManager {
 	public static void registerNetworkChannel(NetworkChannel<?> networkChannel) {
 		Objects.requireNonNull(networkChannel, "networkChannel cannot be null");
 		String channel = networkChannel.getChannel();
+		if (channel.isEmpty()) {
+			throw new IllegalArgumentException("Channels cannot have an empty name!");
+		}
 		if (channel.indexOf('\u0000') != 0) {
 			throw new IllegalArgumentException("Channels cannot have null bytes!");
 		}

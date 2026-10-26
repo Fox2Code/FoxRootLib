@@ -75,6 +75,11 @@ public final class FRLCore {
 			mainGameThread = Thread.currentThread();
 			GameStartingEvent.INSTANCE.callEvent();
 		}
+		try {
+			FRLConfig.load();
+		} catch (IOException e) {
+			throw new IOError(e);
+		}
 	}
 
 	public static void onGameLoadingNoHelpLibe() {

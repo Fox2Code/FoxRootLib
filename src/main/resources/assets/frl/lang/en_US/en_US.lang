@@ -1,4 +1,7 @@
 gui.options.page.frl.title=FoxRootLib
+gui.options.page.frl.category.security.title=Security
+gui.options.page.frl.force_auth2.title=Force Auth2
+gui.options.page.frl.force_auth2.desc=Prevent the game from falling back to the insecure BTA Auth system when it fails to authenticate with Auth2, please do not connect to an untrusted server with this option off.
 tile.frl.missing_block.name=Missing Block
 tile.frl.missing_block.desc=This may appear when you have blocks that are missing on your client.
 tile.frl.missing_block_adv.desc=Missing block on client: %s

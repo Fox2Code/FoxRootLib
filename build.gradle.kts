@@ -22,7 +22,8 @@ val modObj: JsonObject = newBufferedReader(fabricModInfo.toPath()).use { reader 
 	gson.fromJson(reader, JsonObject::class.java)
 }
 
-val processedLicense = file("LICENSE").readLines()
+val licenseFile = layout.projectDirectory.file("LICENSE")
+val processedLicense: String = licenseFile.asFile.readLines()
 	.joinToString(separator = "\n", prefix = "/*\n", postfix = "\n */\n") {
 		if(it.isEmpty()) { " *" } else { " * $it" }
 	}
@@ -140,6 +141,10 @@ dependencies {
 	localRuntime("org.lwjgl:lwjgl-openal::$lwjglNatives")
 	localRuntime("org.lwjgl:lwjgl-opengl::$lwjglNatives")
 	localRuntime("org.lwjgl:lwjgl-stb::$lwjglNatives")
+
+	testImplementation(platform("org.junit:junit-bom:5.10.2"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 java {
 	toolchain {
@@ -150,23 +155,8 @@ java {
 	targetCompatibility = JavaVersion.toVersion(javaVersion.get())
 	withSourcesJar()
 }
-val licenseFile = run {
-	val rootLicense = layout.projectDirectory.file("LICENSE")
-	val parentLicense = layout.projectDirectory.file("../LICENSE")
-	when {
-		rootLicense.asFile.exists() -> {
-			logger.lifecycle("Using LICENSE from project root: {}", rootLicense.asFile)
-			rootLicense
-		}
-		parentLicense.asFile.exists() -> {
-			logger.lifecycle("Using LICENSE from parent directory: {}", parentLicense.asFile)
-			parentLicense
-		}
-		else -> {
-			logger.warn("No LICENSE file found in project or parent directory.")
-			null
-		}
-	}
+tasks.named<Test>("test") {
+	useJUnitPlatform()
 }
 tasks {
 	withType<JavaCompile>().configureEach {
@@ -181,13 +171,17 @@ tasks {
 	}
 	withType<JavaExec>().configureEach { defaultCharacterEncoding = "UTF-8" }
 	withType<Javadoc>().configureEach { options.encoding = "UTF-8" }
-	withType<Test>().configureEach { defaultCharacterEncoding = "UTF-8" }
+	withType<Test>().configureEach {
+		defaultCharacterEncoding = "UTF-8"
+		useJUnitPlatform()
+	}
 	withType<Jar>().configureEach {
-		licenseFile?.let {
-			from(it) {
-				rename { original -> "${original}_${archiveBaseName.get()}" }
-			}
+        if (archiveBaseName.getOrElse("frl") == "frl") {
+			archiveBaseName.set("FoxRootLib")
 		}
+		from(licenseFile) {
+            rename { original -> "${original}_${archiveBaseName.get()}" }
+        }
 	}
 	processResources {
 		val resourceMap = mapOf(

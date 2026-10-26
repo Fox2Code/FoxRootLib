@@ -40,6 +40,8 @@
     "world.chunk.MixinMissingBlockFixer"
   ],
   "client": [
+    "gui.MixinScreenConnecting",
+    "gui.MixinTooltipElement",
     "net.MixinPacketHandlerClient",
     "net.MixinPingPacketHandler",
     "nohalplibe.MixinBlockModelDispatcher",
